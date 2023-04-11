@@ -8,6 +8,8 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.servise.RolesService;
 import ru.kata.spring.boot_security.demo.servise.UsersService;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -22,38 +24,25 @@ public class AdminController {
     }
 
     @GetMapping
-    public String showUsers(ModelMap model) {
+    public String show(Principal principal, ModelMap model) {
+        model.addAttribute("activeUser", userService.findByUsername(principal.getName()));
         model.addAttribute("users", userService.getAllUsers());
-        return "allUsers";
-    }
-
-    @GetMapping("/new")
-    public String newUser(ModelMap model) {
         model.addAttribute("allroles", rolesService.getAllRoles());
-        model.addAttribute("user", new User());
-        return "new";
-    }
-    @GetMapping(value = {"/{id}"})
-    public String showUserById(@PathVariable("id") Long id, ModelMap model) {
-        model.addAttribute("user", userService.getUserById(id));
-        return "user";
+        model.addAttribute("newuser", new User());
+        return "admin";
     }
 
     @PostMapping
-    public String createUser(@ModelAttribute("user") User user) {
+    public String createUser(@ModelAttribute("newuser") User user) {
         userService.saveUser(user);
         return "redirect:/admin";
     }
 
-    @GetMapping("/{id}/edit")
-    public String editUser(ModelMap model, @PathVariable("id") long id) {
-        model.addAttribute("allroles", rolesService.getAllRoles());
-        model.addAttribute("user", userService.getUserById(id));
-        return "edit";
-    }
-
     @PatchMapping("/{id}")
-    public String updateUser(@ModelAttribute("user") User user, @PathVariable("id") long id) {
+    public String updateUser(@ModelAttribute("edituser") User user, @PathVariable("id") long id) {
+        System.out.println(user.toString());
+        User user1 = userService.getUserById(id);
+        System.out.println(user1);
         userService.updateUser(id, user);
         return "redirect:/admin";
     }
@@ -63,6 +52,4 @@ public class AdminController {
         userService.deleteUser(id);
         return "redirect:/admin";
     }
-
-
 }

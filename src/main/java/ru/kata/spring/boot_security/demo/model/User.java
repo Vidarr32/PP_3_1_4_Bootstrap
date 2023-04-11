@@ -24,6 +24,9 @@ public class User implements UserDetails {
     private String lastname;
 
     @Column
+    private Integer age;
+
+    @Column
     private String email;
 
     @Column
@@ -44,9 +47,10 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    public User(String name, String lastname, String email, String password, List<Role> roles) {
+    public User(String name, String lastname, Integer age, String email, String password, List<Role> roles) {
         this.name = name;
         this.lastname = lastname;
+        this.age = age;
         this.email = email;
         this.password = password;
         this.roles = roles;
@@ -77,6 +81,14 @@ public class User implements UserDetails {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     public String getEmail() {
@@ -125,10 +137,23 @@ public class User implements UserDetails {
         return getRoles();
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", age=" + age +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
+
     public String roleToString () {
         StringBuilder st = new StringBuilder();
         for (Role role:roles) {
-            st.append(role.toString()+"; ");
+            st.append(role.toString()+" ");
         }
         return st.toString();
     }

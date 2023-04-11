@@ -60,9 +60,10 @@ public class UsersServiceImpl implements UsersService {
     @Override
     @Transactional
     public void updateUser(long id, User updetedUser) {
-        if (!updetedUser.getPassword().equals(userRepository.getById(id).getPassword())) {
+        if (updetedUser.getPassword().isEmpty()) {
+            updetedUser.setPassword(userRepository.getById(id).getPassword());
+        } else
             updetedUser.setPassword(passwordEncoder.encode(updetedUser.getPassword()));
-        }
         updetedUser.setId(id);
         userRepository.save(updetedUser);
     }

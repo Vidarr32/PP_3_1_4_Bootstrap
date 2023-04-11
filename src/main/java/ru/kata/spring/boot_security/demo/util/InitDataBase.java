@@ -34,10 +34,10 @@ public class InitDataBase implements CommandLineRunner {
             rolesService.saveRole(roleAdmin);
         }
 
-        User user = new User("Ivan", "Ivanov", "user@gmail.ru", "user",
+        User user = new User("Ivan", "Ivanov", 18, "user@gmail.ru", "user",
                 new ArrayList<>(Arrays.asList(roleUser)));
-        User admin = new User("Alex", "Volkov", "admin@gmail.ru", "admin",
-                new ArrayList<>(Arrays.asList(roleUser, roleAdmin)));
+        User admin = new User("Alex", "Volkov",22, "admin@gmail.ru", "admin",
+                new ArrayList<>(Arrays.asList(roleAdmin, roleUser)));
 
         usersService.saveUser(user);
         usersService.saveUser(admin);
